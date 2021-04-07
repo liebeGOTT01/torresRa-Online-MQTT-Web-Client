@@ -1,0 +1,133 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MQTT</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <center>
+        <h1>MQTT over web socket</h1>
+    </center>
+
+    <div class="container-fluid">
+        <div class="row justify-content-around">
+            <div class="container-fluid col-lg-4 col-md-12 col-sm-12 mt-4">
+                <div class="card">
+                    <div class="card-header bg-primary text-white h4">Broker</div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <strong>Address: </strong>
+                            <input type="text" class="form-control" id="address" name="address" value="wss://test.mosquitto.org:8081/mqtt">
+                            <br>
+                            <button type="button" class="btn btn-success" id="con-Broker">Connect</button>
+                            <button type="button" class="btn btn-warning">Disconnect</button>
+                            <br>
+                            <br>
+                            <strong>Status: </strong>
+                            <input type="text" class="form-control" id="status" name="status" value="Press Connect">
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="card">
+                    <div class="card-header bg-info">Incoming Messages</div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Topic</th>
+                                    <th scope="col">Payload</th>
+                                    <th scope="col">Time Stamp</th>
+                                </tr>
+                            </thead>
+                            <tbody id="broker-table">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-fluid col-lg-4 col-md-12 col-sm-12 mt-4">
+                <div class="card">
+                    <div class="card-header bg-primary text-white h4">Publish</div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <strong>Topic: </strong>
+                            <input type="text" class="form-control" id="pub-topic" name="pub-topic" placeholder="Enter Topic">
+                            <br>
+                            <strong>Payload: </strong>
+                            <input type="text" class="form-control" id="pub-payload" name="pub-payload" placeholder="Enter message">
+                            <br>
+                            <button type="button" class="btn btn-success" id="pub-button">Publish</button>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="card">
+                    <div class="card-header bg-info">Published Messages</div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Topic</th>
+                                    <th>Payload</th>
+                                    <th>Time Stamp</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pub-table">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-fluid col-lg-4 col-md-12 col-sm-12 mt-4">
+                <div class="card">
+                    <div class="card-header bg-primary text-white h4">Subscribe</div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <strong>Topic: </strong>
+                            <input type="text" class="form-control" id="sub-topic" name="sub-topic">
+                            <br>
+                            <button type="button" class="btn btn-success" id="sub-button">Subscribe</button>
+                            <button type="button" class="btn btn-warning">Unsubscribe</button>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="card">
+                    <div class="card-header bg-info">Subscribed Messages</div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Topic</th>
+                                    <th scope="col">Time Stamp</th>
+                                </tr>
+                            </thead>
+                            <tbody id="sub-table">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+
+<script src="./browserMqtt.js"></script>
+<script src="./index.js"></script>
+
+</html>
