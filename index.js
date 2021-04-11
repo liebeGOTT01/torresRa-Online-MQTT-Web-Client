@@ -1,66 +1,58 @@
-var client = mqtt.connect('wss://test.mosquitto.org:8081/mqtt')
-var status = true
-
 $("#con-Broker").on('click', function() {
     $('#status').val("Connecting....")
     client = mqtt.connect($('#address').val())
+
     client.on("connect", function() {
         $('#status').val("Connected!")
-
     })
+
+    topic = $("#pub-topic").val()
+    message = $('#pub-payload').val()
+
+    client.on('message', function(topic, message) {
+        var date = new Date()
+        var time = (date.toDateString() + " " + date.toLocaleTimeString())
+        if (topic == $('#sub-topic').val()) {
+            $("#broker-table").prepend(
+                "<tr><td>" +
+                topic +
+                "</td><td>" +
+                message.toString() +
+                "</td><td>" +
+                time +
+                "</td><td>"
+            );
+        }
+    });
 });
-
-
-topic = $("#pub-topic").val()
-message = $("#pub-payload").val()
-var date = new Date()
-time = (date.toDateString() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds())
-
-client.on('message', function(topic, message, time) {
-    if (topic == $('#sub-topic').val()) {
-        $("#broker-table").append(
-            "<tr><td>" +
-            topic +
-            "</td><td>" +
-            message +
-            "</td><td>" +
-            time +
-            "</td><td>"
-        );
-    }
-})
 
 $("#pub-button").on('click', function() {
     var pubTopic = $("#pub-topic").val()
-    var payload = $("#pub-payload").val()
-    var date = new Date()
-    var pubTime = (date.toDateString() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds())
-    client.publish(pubTopic, payload, pubTime)
-    if ($('#status').val() == "Connected!") {
-        $("#pub-table").append(
-            "<tr><td>" +
-            pubTopic +
-            "</td><td>" +
-            payload +
-            "</td><td>" +
-            pubTime +
-            "</td><td>"
-        );
-    }
+    var payload = $('#pub-payload').val()
+    var pubDate = new Date()
+    var pubTime = (pubDate.toDateString() + " " + pubDate.toLocaleTimeString())
+    client.publish(pubTopic, payload)
+    $("#pub-table").prepend(
+        "<tr><td>" +
+        pubTopic +
+        "</td><td>" +
+        payload +
+        "</td><td>" +
+        pubTime +
+        "</td><td>"
+    );
 });
 
 $("#sub-button").on('click', function() {
     var subTopic = $("#sub-topic").val()
-    var date = new Date()
-    var subTime = (date.toDateString() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds())
-    client.subscribe(subTopic, subTime)
-    if ($('#status').val() == "Connected!") {
-        $("#sub-table").append(
-            "<tr><td>" +
-            subTopic +
-            "</td><td>" +
-            subTime +
-            "</td><td>"
-        );
-    }
+    var subDate = new Date()
+    var subTime = (subDate.toDateString() + " " + subDate.toLocaleTimeString())
+    client.subscribe(subTopic)
+    $("#sub-table").prepend(
+        "<tr><td>" +
+        subTopic +
+        "</td><td>" +
+        subTime +
+        "</td><td>"
+    );
 });
